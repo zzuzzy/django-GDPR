@@ -287,7 +287,7 @@ class ModelAnonymizerBase(type):
     """
 
     def __new__(cls, name, bases, attrs):
-        from gdpr.loading import register
+        from gdpr.loading import anonymizer_register
 
         new_obj = super(ModelAnonymizerBase, cls).__new__(cls, name, bases, attrs)
 
@@ -302,7 +302,7 @@ class ModelAnonymizerBase(type):
             if isinstance(obj, FieldAnonymizer):
                 fields[name] = obj
         new_obj.fields = fields
-        register.register_anonymizer(new_obj.Meta.model, new_obj)
+        anonymizer_register.register(new_obj.Meta.model, new_obj)
         return new_obj
 
 

@@ -29,3 +29,4 @@ class AbstractPurpose(metaclass=PurposeMetaclass):
     slug = None
     fields = {}
     expiration_timedelta = timedelta()
+    is_retaining_data = False

@@ -135,3 +135,32 @@ class DummyFileAnonymizer(FieldAnonymizer):
             content = f.read()
         value.save(basename(self.file_path), ContentFile(content), save=False)
         return value
+
+
+class ModelAnonymizerBase(type):
+    """
+    Metaclass for anonymizers. The main purpose of the metaclass is to register anonymizers and find field anonymizers
+    defined in the class as attributes and store it to the fields property.
+    """
+    def __new__(cls, name, bases, attrs):
+        from .loading import register
+
+        new_obj = super(ModelAnonymizerBase, cls).__new__(cls, name, bases, attrs)
+
+        # Also ensure initialization is only performed for subclasses of ModelAnonymizer
+        # (excluding Model class itself).
+        parents = [b for b in bases if isinstance(b, ModelAnonymizerBase)]
+        if not parents or not hasattr(new_obj, 'Meta'):
+            return new_obj
+
+        fields = getattr(new_obj, 'fields', {})
+        for name, obj in attrs.items():
+            if isinstance(obj, FieldAnonymizer):
+                fields[name] = obj
+        new_obj.fields = fields
+        if not getattr(new_obj.Meta, 'abstract', False):
+            register.register_anonymizer(new_obj.Meta.model, new_obj)
+        return new_obj
+
+
+

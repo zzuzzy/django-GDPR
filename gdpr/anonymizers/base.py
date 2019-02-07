@@ -69,6 +69,7 @@ class ModelAnonymizerMeta(type):
             if isinstance(obj, FieldAnonymizer):
                 fields[name] = obj
         new_obj.fields = fields
+
         if not getattr(new_obj.Meta, 'abstract', False):
             anonymizer_register.register(new_obj.Meta.model, new_obj)
         return new_obj

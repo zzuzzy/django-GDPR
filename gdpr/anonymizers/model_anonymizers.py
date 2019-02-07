@@ -109,8 +109,8 @@ class ModelAnonymizerBase(metaclass=ModelAnonymizerMeta):
             related_attribute = getattr(obj, name, None)
             related_metafield = getattr(obj.__class__, name, None)
             if self.is_reverse_relation(related_metafield):
-                for obj in related_attribute.all():
-                    related_fields.anonymizer.anonymize_obj(obj, legal_reason, purpose, related_fields)
+                for new_obj in related_attribute.all():
+                    related_fields.anonymizer.anonymize_obj(new_obj, legal_reason, purpose, related_fields)
             elif self.is_forward_relation(related_metafield) and related_attribute is not None:
                 related_fields.anonymizer.anonymize_obj(related_attribute, legal_reason, purpose, related_fields)
 

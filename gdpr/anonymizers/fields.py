@@ -50,8 +50,7 @@ class CharFieldAnonymizer(FieldAnonymizer):
     """
 
     def get_anonymized_value(self, value):
-        warnings.warn('CharFieldAnonymizer is not yet implemented.', UserWarning)
-        return value + 'NotImplemented'
+        return value[::-1] if len(value) > 1 else chr(ord(value)+1)
 
 
 class DecimalFieldAnonymizer(FieldAnonymizer):
@@ -75,7 +74,7 @@ class IPAddressFieldAnonymizer(FieldAnonymizer):
 
     def get_anonymized_value(self, value):
         warnings.warn('IPAddressFieldAnonymizer is not yet implemented.', UserWarning)
-        return value
+        return '10.20.30.40'
 
 
 class AccountNumberFieldAnonymizer(FieldAnonymizer):
@@ -98,8 +97,9 @@ class JSONFieldAnonymizer(FieldAnonymizer):
     """
 
     def get_anonymized_value(self, value):
+        import json
         warnings.warn('JSONFieldAnonymizer is not yet implemented.', UserWarning)
-        return value
+        return json.dumps({'name': 'anonymized'})
 
 
 class StaticValueAnonymizer(FieldAnonymizer):

@@ -47,7 +47,7 @@ class AbstractPurpose(metaclass=PurposeMetaclass):
     is_retaining_data = False
 
     def get_parsed_fields(self, model: Type[Model]) -> Fields:
-        return Fields(self.fields, model)
+        return Fields(self.fields or (), model)
 
     def deanonymize_obj(self, obj: Model, fields: Optional[FieldMatrix] = None):
         fields = fields or self.fields or ()

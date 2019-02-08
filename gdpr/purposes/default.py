@@ -44,6 +44,7 @@ class AbstractPurpose(metaclass=PurposeMetaclass):
     fields: Union[str, Tuple[Any, ...]]
     expiration_timedelta: Any
     anonymize_legal_reason_related_objects_only: bool = False  # @TODO: Add support
+    is_retaining_data = False
 
     def get_parsed_fields(self, model: Type[Model]) -> Fields:
         return Fields(self.fields, model)
